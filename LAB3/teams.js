@@ -30,7 +30,7 @@ export const updateTeamById=(id, updateTeam)=>{
     return team;
 };
 
-export const deleteTeamById=(id)=>{
+export const deleteTeamById=(id)=>{ 
     const index=teams.findIndex((team)=>team.id===id);
     if(index===-1) return null;
     teams.splice(index,1);
