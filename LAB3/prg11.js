@@ -1,67 +1,57 @@
 import http from "http";
+// import * as teams from "teams.js";
+import { getAllTeams, addTeam } from "../lab4/teams.js";
+import { parse as parseUrl } from "url";
 
-const server = http.createServer((req, res) => {
+const PORT = 5000;
 
-    if (req.url === '/' && req.method === 'GET') {
-        res.end('home page');
-    }
+const sendJson = (res, statusCode, data, keyword, msg) => {
+  res.writeHead(statusCode, { "content-type": "application/json" });
+  res.end(data === "undefined" ? "" : JSON.stringify({ [keyword]: msg, data }));
+};
 
-    else if (req.url === '/product' && req.method === 'GET') {
+const parseJSONBody = (req) => {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch (error) {
+        reject(error);
+      }
+    });
+    req.on("error", reject);
+  });
+};
 
-        const product = [
-            {
-                id: 1,
-                name: "mobile",
-                price: 2000,
-            },
-            {
-                id: 2,
-                name: "duster",
-                price: 10,
-            }
-        ];
+const server = http.createServer(async (req, res) => {
+  const { pathname, query } = parseUrl(req.url, true);
+  const { method } = req;
+  console.log("pathname:", pathname);
+  console.log("query:", query);
+  console.log("Method:", method);
 
-        res.end(JSON.stringify(product));
-    }
+  if (pathname === "/api/v1/teams" && method === "GET") {
+    let teams = getAllTeams();
+    return sendJson(res, 200, teams, "count", teams.length);
+  } else if (pathname === "/api/v1/teams" && method == "POST") {
+    const { tname, tl, members } = await parseJSONBody(req);
+    if (!tname || !tl || !members)
+      return sendJson(400, {
+        error: "Team Name, Team Leader, or Members not defined",
+      });
+    const team = addTeam({ tname, tl, members });
 
-    else if (req.url === '/product' && req.method === 'POST') {
-
-        // retrieve data from client
-        let body = "";
-
-        req.on("data", (chunk) => {
-            body += chunk;
-        });
-
-        req.on("end", () => {
-
-            const product = JSON.parse(body);
-
-            // add data to database
-            res.writeHead(201, {
-                "content-type": "application/json"
-            });
-
-            // send back the status
-            res.end(JSON.stringify({
-                msg: "product added",
-                product: product
-            }));
-        });
-    }
-
-    else if (req.url === '/product' && req.method === 'PUT') {
-        res.end('update product');
-    }
-
-    else if (req.url === '/product' && req.method === 'DELETE') {
-        res.end('remove product');
-    }
-
-    else {
-        res.statusCode = 404;
-        res.end("not found");
-    }
+    return sendJson(res, 201, team, "Message", "Team registered successfully");
+  } else {
+    res.statusCode = 404;
+    res.end();
+  }
 });
 
-server.listen(3000, () => console.log("prg11 is running..."));
+server.listen(PORT, () => {
+  console.log("SIH Server is running at ", PORT);
+});
