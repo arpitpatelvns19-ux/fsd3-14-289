@@ -17,5 +17,5 @@ update package.json to run the project, update script property as below
     "start":"node app.js",
     "dev":"nodemon app.js"
 },
-```
+``` 
 now you can start the server by typing `npm run dev` in the terminal of project folder

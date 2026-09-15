@@ -1,53 +1,51 @@
 let teams = [
     {
         id: 1,
-        tname: "rusty",
-        tl: "Aashish Raj",
-        email: "aashish@example.com",
-        members: 5
+        tname: "Rusty",
+        tl: "Arpit Agnihotri",
+        email: "arpit151604@gmail.com",
+        members: 6
     },
     {
         id: 2,
-        tname: "table",
-        tl: "Arpit",
-        email: "arpit@example.com",
-        members: 7
+        tname: "Acube",
+        tl: "Archit Shrivastava",
+        email: "archit314@gmail.com",
+        members: 3
     }
 ];
 
-let nextid = 3;
+let nextId = 3;
 
 export const getAllTeams = () => teams;
 
-export const getTeamById = (id) => {
-    return teams.find((team) => team.id === id);
-};
+export const getTeamById = (id) =>
+    teams.find((team) => team.id === id);
 
-export const addTeam = (newteam) => {
+export const addTeam = (newTeam) => {
     const team = {
-        id: nextid++,
-        ...newteam
+        id: nextId++,
+        ...newTeam
     };
 
     teams.push(team);
     return team;
 };
 
-export const updateTeamById = (id, updateTeam) => {
+export const updateTeam = (id, updatedTeam) => {
     const team = getTeamById(id);
 
     if (!team) return null;
 
-    Object.assign(team, updateTeam);
+    Object.assign(team, updatedTeam);
     return team;
 };
 
-export const deleteTeamById = (id) => {
+export const deleteTeam = (id) => {
     const index = teams.findIndex((team) => team.id === id);
 
-    if (index === -1) return null;
+    if (index === -1) return false;
 
-    const deletedTeam = teams.splice(index, 1)[0];
-
-    return deletedTeam;
+    teams.splice(index, 1);
+    return true;
 };
