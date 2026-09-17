@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiry - SoundWave</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">SoundWave</div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="enquiry.html">Enquiry</a>
+        </nav>
+    </header>
+
+    <section class="enquiry">
+        <h1>Make an Enquiry</h1>
+
+        <form onsubmit="submitEnquiry(event)">
+
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="message">Your Enquiry</label>
+            <textarea id="message" placeholder="Enter your message" rows="5" required></textarea>
+
+            <button type="submit">Submit Enquiry</button>
+
+        </form>
+
+        <p id="result"></p>
+    </section>
+
+    <footer>
+        <p>© 2026 SoundWave. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function submitEnquiry(event) {
+            event.preventDefault();
+
+            document.getElementById("result").textContent =
+                "Thank you! Your enquiry has been submitted.";
+
+            event.target.reset();
+        }
+    </script>
+
+</body>
+</html>
