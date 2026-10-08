@@ -1,16 +1,19 @@
 const products = [
-  { title: "Apple", id: 1, isfruit: true},
-  { title: "Banana", id: 2, isfruit: true},
-  { title: "Carrot", id: 3, isfruit: false},
-  { title: "Date", id: 4, isfruit: true},
+  { title: "Cabbage", id: 1, isFruit: false },
+  { title: "Potato", id: 2, isFruit: false },
+  { title: "Banana", id: 3, isFruit: true },
+  { title: "Apple", id: 4, isFruit: true },
 ];
 
-const listitems = products.map((item) => <li>  {item.id} style {item.title} </li>);
-console.log(listitems);
+const ListItem = products.map((item) => (
+  <li key={item.id} style={{ color: item.isFruit ? "red" : "green" }}>
+    {item.title}
+  </li>
+));
+
+console.log(ListItem);
 
 const Fruit = () => {
-    return <div>Fruit</div>
+  return <ul>{ListItem}</ul>;
 };
-
 export default Fruit;
-  
